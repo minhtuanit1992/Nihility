@@ -7,13 +7,13 @@ namespace Nihility.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UpdateModels : IMigrationMetadata
+    public sealed partial class RecoverDatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateModels));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RecoverDatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "202002060514567_UpdateModels"; }
+            get { return "202002081124029_RecoverDatabase"; }
         }
         
         string IMigrationMetadata.Source

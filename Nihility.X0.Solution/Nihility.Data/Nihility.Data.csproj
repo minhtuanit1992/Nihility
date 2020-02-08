@@ -63,21 +63,9 @@
     <Compile Include="Interface\IDbFactory.cs" />
     <Compile Include="Interface\IRepository.cs" />
     <Compile Include="Interface\IUnitOfWork.cs" />
-    <Compile Include="Migrations\202002030905266_InitialDB.cs" />
-    <Compile Include="Migrations\202002030905266_InitialDB.designer.cs">
-      <DependentUpon>202002030905266_InitialDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202002040605343_AddErrorTable.cs" />
-    <Compile Include="Migrations\202002040605343_AddErrorTable.Designer.cs">
-      <DependentUpon>202002040605343_AddErrorTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202002050341442_Intergrate-AspnetIdentity.cs" />
-    <Compile Include="Migrations\202002050341442_Intergrate-AspnetIdentity.Designer.cs">
-      <DependentUpon>202002050341442_Intergrate-AspnetIdentity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202002060514567_UpdateModels.cs" />
-    <Compile Include="Migrations\202002060514567_UpdateModels.Designer.cs">
-      <DependentUpon>202002060514567_UpdateModels.cs</DependentUpon>
+    <Compile Include="Migrations\202002081124029_RecoverDatabase.cs" />
+    <Compile Include="Migrations\202002081124029_RecoverDatabase.Designer.cs">
+      <DependentUpon>202002081124029_RecoverDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NihiDbContext.cs" />
@@ -106,20 +94,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202002030905266_InitialDB.resx">
-      <DependentUpon>202002030905266_InitialDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202002040605343_AddErrorTable.resx">
-      <DependentUpon>202002040605343_AddErrorTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202002050341442_Intergrate-AspnetIdentity.resx">
-      <DependentUpon>202002050341442_Intergrate-AspnetIdentity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202002060514567_UpdateModels.resx">
-      <DependentUpon>202002060514567_UpdateModels.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Nihility.Common\Nihility.Common.csproj">
       <Project>{d80c259a-0545-4ae0-a47a-63fa3cd1592a}</Project>
       <Name>Nihility.Common</Name>
@@ -128,6 +102,11 @@
       <Project>{c559ab21-5f7c-43d9-aeb3-fd48494bcbb2}</Project>
       <Name>Nihility.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202002081124029_RecoverDatabase.resx">
+      <DependentUpon>202002081124029_RecoverDatabase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
