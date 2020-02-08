@@ -1,0 +1,261 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900&display=swap&subset=cyrillic,cyrillic-ext,latin-ext,vietnamese');
+@import '../Css/Icon/Font-Awesome.css';
+/*#region Colors*/
+$hyper-primary: #536de6;
+$hyper-text-color: #6c757d;
+$hyper-muted: #98a6ad;
+$hyper-dark: #495057;
+$hyper-border-focus: #c1c9d0;
+
+$white-color: #ffffff;
+$gray-color: #dee2e6;
+/*#endregion*/
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+/* ===================================================================================
+                                  Common
+   =================================================================================== */
+/*#region Label*/
+label {
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: .5rem;
+}
+/*#endregion*/
+
+/*#region Input*/
+.hyper-form-control {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: .45rem .9rem;
+    font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: $hyper-muted;
+    background-color: var(--white);
+    background-clip: padding-box;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    overflow: visible;
+    font-family: inherit;
+    -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+
+    &:focus {
+        color: $hyper-dark;
+        background-color: $white-color;
+        border-color: $hyper-border-focus;
+        outline: 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+}
+/*#endregion*/
+
+/*#region Checkbox*/
+.checkbox-control {
+    position: relative;
+    display: block;
+    min-height: 1.35rem;
+    padding-left: 1.5rem;
+
+    .checkbox-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 1rem;
+        height: 1.175rem;
+        opacity: 0;
+    }
+
+    .checkbox-label {
+        position: relative;
+        margin-bottom: 0;
+        vertical-align: top;
+
+        &::before {
+            position: absolute;
+            top: .175rem;
+            left: -1.5rem;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            pointer-events: none;
+            content: "";
+            border-radius: .25rem;
+            background-color: $white-color;
+            border: $gray-color solid 1px;
+            -webkit-transition: background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+            transition: background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+            transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        }
+
+        &::after {
+            position: absolute;
+            top: .175rem;
+            left: -1.5rem;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            content: "";
+            background: no-repeat 50%/50% 50%;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region Button*/
+.hyper-btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #6c757d;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .45rem .9rem;
+    font-size: .9rem;
+    line-height: 1.5;
+    border-radius: .15rem;
+    -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+
+    &:hover {
+        color: #6c757d;
+        text-decoration: none;
+    }
+}
+
+.hyper-btn-primary {
+    color: #fff;
+    background-color: #536de6;
+    border-color: #536de6;
+    -webkit-box-shadow: 0 0 0 rgba(83,109,230,.5);
+    box-shadow: 0 0 0 rgba(83,109,230,.5);
+
+    &:hover {
+        color: #fff;
+        background-color: #3251e1;
+        border-color: #2647e0;
+    }
+}
+/*#endregion*/
+
+/* ===================================================================================
+                                  Navigation
+   =================================================================================== */
+/*#region*/
+#navigation {
+    font-family: 'Nunito', sans-serif;
+}
+/*#endregion*/
+/* ===================================================================================
+                                   Account Style
+   =================================================================================== */
+/*#region Login Page*/
+.account-page {
+    font-family: 'Nunito',sans-serif;
+    color: $hyper-text-color;
+
+    .card {
+        .card-header {
+            text-align: center;
+            background-color: $hyper-primary;
+        }
+
+        .card-body {
+
+            header {
+                .card-title {
+                    font-size: 1.125rem;
+                    margin-top: 0;
+                    font-weight: 700 !important;
+                    text-align: center;
+                }
+
+                .card-subtitle {
+                    color: $hyper-muted;
+                    font-weight: 400;
+                    font-size: 14.4px;
+                    margin-bottom: 2.25rem;
+                }
+            }
+
+            #loginForm {
+                small {
+                    font-family: inherit;
+                }
+            }
+        }
+    }
+}
+/*#endregion*/
+
+/*#region Register Page*/
+.account-page {
+    #registerForm {
+        small {
+            font-family: inherit;
+        }
+    }
+}
+/*#endregion*/
+
+/* ===================================================================================
+                                   Animation
+   =================================================================================== */
+/*#region*/
+@keyframes slideIn {
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    0% {
+        transform: translateY(1rem);
+        opacity: 0;
+    }
+}
+
+@-webkit-keyframes slideIn {
+    0% {
+        -webkit-transform: transform;
+        -webkit-opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateY(0);
+        -webkit-opacity: 1;
+    }
+
+    0% {
+        -webkit-transform: translateY(1rem);
+        -webkit-opacity: 0;
+    }
+}
+
+.slideIn {
+    -webkit-animation-name: slideIn;
+    animation-name: slideIn;
+}
+/*#endregion*/
