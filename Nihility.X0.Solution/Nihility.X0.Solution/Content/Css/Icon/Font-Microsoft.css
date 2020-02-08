@@ -1,0 +1,49 @@
+﻿/* ===================================================================================
+                                       Setup Font-MicroSoft
+   =================================================================================== */
+.ms-icon {
+    color: #512bd4;
+    width: 50px;
+    height: 50px;
+    font-size: 50px;
+    line-height: 1.1em;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-family: "Segoe MDL2 Assets";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+}
+
+/*Bổ sung thêm Icon tại https://docs.microsoft.com/en-us/windows/uwp/design/style/segoe-ui-symbol-font */
+
+/* ===================================================================================
+                                         Font Code
+   =================================================================================== */
+
+/*#region Microsoft Fonts Style*/
+.ms-icon-desktop::before {
+    content: "\E703";
+}
+
+.ms-icon-mobile::before {
+    content: "\E1C9";
+}
+
+.ms-icon-security::before {
+    content: "\E83D";
+}
+
+.ms-icon-microservices::before {
+    content: "\E74C";
+}
+
+.ms-icon-360::before {
+    content: "\F131";
+}
+
+.ms-icon-target::before {
+    content: "\F272";
+}
+/*#endregion*/

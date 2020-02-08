@@ -1,0 +1,70 @@
+﻿<nav id="navigation" class="navbar navbar-expand-lg navbar-light bg-light pt-lg-3 pb-0">
+    <div class="container">
+        <a class="navbar-brand mr-lg-5" href="#">
+            <img src="~/Images/Logo/Brand.png" alt="NoBrand" height="25" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Client</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Store
+                    </a>
+                    <div class="dropdown-menu animated slideIn" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Redeem</a>
+                        <a class="dropdown-item" href="#">Premium</a>
+                    </div>
+                </li>
+            </ul>
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                <img src="~/Image/Logo/sm-logo.png" class="img-thumbnail" width="50" height="50" alt="Alternate Text" />
+                            </a>
+
+                            <div class="dropdown-menu">
+                                @Html.ActionLink("Profile", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
+                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                            </div>
+                        </li>
+                    </ul>
+                }
+            }
+            else
+            {
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a id="loginLink" href="@Url.Action("Login","Account",routeValues: null)" class="nav-link">Login <i class="fas fa-user-plus"></i></a>
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</nav>
