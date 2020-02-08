@@ -61,7 +61,13 @@ namespace Nihility.X0.Solution.Controllers
             return View();
         }
 
-        // POST: /Account/Login
+        /// <summary>
+        /// - HttpMethod: POST
+        /// - Url: Host/Account/Login
+        /// </summary>
+        /// <param name="model">Thông tin đăng nhập của người dùng</param>
+        /// <param name="returnUrl">Nếu đăng nhập thành công sẽ trở về đường dẫn này</param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -72,23 +78,44 @@ namespace Nihility.X0.Solution.Controllers
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-
-            // the password here is not hashed
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            try
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                ApplicationUser currentUser = await UserManager.FindByEmailAsync(model.Email);
+
+                if (currentUser != null)
+                {
+                    model.UserName = currentUser.UserName;
+                }
+
+                // Hiện tại vẫn chưa thiết lập đếm số lần đăng nhập thất bại để khóa Account. Để thiết lập khóa tài khoản khi đăng nhập thất bại quá nhiều, đổi shouldLockout là true
+                var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        {
+                            if (!await UserManager.IsEmailConfirmedAsync(currentUser.Id))
+                            {
+                                ModelState.AddModelError("", "Tài khoản đang chờ được phê duyệt");
+                                return View(model);
+                            }
+                            else
+                            {
+                                return RedirectToLocal(returnUrl);
+                            }
+                        }
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
