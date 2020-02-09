@@ -109,7 +109,7 @@ namespace Nihility.X0.Solution.Controllers
                         return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                     case SignInStatus.Failure:
                     default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
+                        ModelState.AddModelError("", "Đăng nhập thất bại, vui lòng kiểm tra lại tài khoản hoặc mật khẩu");
                         return View(model);
                 }
             }
@@ -117,6 +117,20 @@ namespace Nihility.X0.Solution.Controllers
             {
                 throw ex;
             }
+        }
+
+        // POST: /Account/LogOff
+        /// <summary>
+        /// - Đăng xuất tài khoản
+        /// </summary>
+        /// <returns>Clear Cookie và các trạng thái đăng nhập</returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            string authenticationTypes = DefaultAuthenticationTypes.ApplicationCookie;
+            AuthenticationManager.SignOut(authenticationTypes);
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: /Account/Register

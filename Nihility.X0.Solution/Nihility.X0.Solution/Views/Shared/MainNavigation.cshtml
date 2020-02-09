@@ -1,7 +1,7 @@
-﻿<nav id="navigation" class="navbar navbar-expand-lg navbar-light bg-light pt-lg-3 pb-0">
+﻿<nav id="navigation" class="navbar navbar-expand-lg navbar-dark bg-dark py-0">
     <div class="container">
-        <a class="navbar-brand mr-lg-5" href="#">
-            <img src="~/Images/Logo/Brand.png" alt="NoBrand" height="25" />
+        <a class="navbar-brand mr-lg-3" href="#">
+            <img src="~/Images/Isometric/startup.svg" alt="NoBrand" height="25" width="25" />
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -27,15 +27,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Store
-                    </a>
-                    <div class="dropdown-menu animated slideIn" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Redeem</a>
-                        <a class="dropdown-item" href="#">Premium</a>
-                    </div>
-                </li>
             </ul>
             @if (Request.IsAuthenticated)
             {
@@ -43,18 +34,35 @@
                 {
                     @Html.AntiForgeryToken()
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="nav-item dropdown">
-                            <a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                                <img src="~/Image/Logo/sm-logo.png" class="img-thumbnail" width="50" height="50" alt="Alternate Text" />
-                            </a>
+                    <nav class="nav-user">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle user-profile" href="#" id="navbardrop" data-toggle="dropdown">
+                                    <span class="user-avarta">
+                                        <img src="~/Images/Logo/Brand.png" class="img-thumbnail" alt="User Avarta" />
+                                    </span>
+                                    <span>
+                                        <span class="user-name">Minh Tuấn</span>
+                                        <span class="user-position">Developer</span>
+                                    </span>
+                                </a>
 
-                            <div class="dropdown-menu">
-                                @Html.ActionLink("Profile", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "dropdown-item" })
-                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                            </div>
-                        </li>
-                    </ul>
+                                <div class="user-menu dropdown-menu animated slideIn w-100 mt-0">
+                                    <div class=" dropdown-header noti-title">
+                                        <h6 class="text-overflow m-0">Welcome !</h6>
+                                    </div>
+                                    <a class="dropdown-item" title="Manage" href="@Url.Action("Index","Manage",routeValues: null)">
+                                        <i class="fas fa-user-circle"></i>
+                                        <span>Profile</span>
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Log off</span>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
                 }
             }
             else
