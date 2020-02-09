@@ -68,17 +68,6 @@ namespace Nihility.X0.Solution.Models
         public bool RememberMe { get; set; }
     }
 
-    public class ExternalLoginConfirmationViewModel
-    {
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [Display(Name = "User Name")]
-        public string UserName { get; set; }
-    }
-
     public class ManageInfoViewModel
     {
         public string LocalLoginProvider { get; set; }

@@ -75,6 +75,7 @@ namespace Nihility.X0.Solution
             //    consumerKey: "",
             //    consumerSecret: "");
 
+            // Cần cài Nutget Package Microsoft.Owin.Security.Facebook.
             FacebookAuthenticationOptions facebookOptions = new FacebookAuthenticationOptions()
             {
                 AuthenticationType = "FaceBook",
