@@ -62,8 +62,8 @@ namespace Nihility.X0.Solution.Controllers
         }
 
         /// <summary>
-        /// - HttpMethod: POST
-        /// - Url: Host/Account/Login
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Create Date: 2/10/2020</para>
         /// </summary>
         /// <param name="model">Thông tin đăng nhập của người dùng</param>
         /// <param name="returnUrl">Nếu đăng nhập thành công sẽ trở về đường dẫn này</param>
@@ -106,7 +106,7 @@ namespace Nihility.X0.Solution.Controllers
                     case SignInStatus.LockedOut:
                         return View("Lockout");
                     case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, model.RememberMe });
                     case SignInStatus.Failure:
                     default:
                         ModelState.AddModelError("", "Đăng nhập thất bại, vui lòng kiểm tra lại tài khoản hoặc mật khẩu");
@@ -119,9 +119,160 @@ namespace Nihility.X0.Solution.Controllers
             }
         }
 
+        /// <summary>
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Create Date: 2/10/2020</para>
+        /// <para>Cung cấp thông tin đăng nhập mà người dùng sử dụng để đăng nhập ví dụ: Google, Facebook v.v...</para>
+        /// <para>Bởi vì người dùng không thể đăng nhập với nhiều nhà cung cấp cùng một lúc</para>
+        /// </summary>
+        /// <param name="provider">Thông tin nhà cung cấp đăng nhập (Google, Facebook...)</param>
+        /// <param name="returnUrl">Nếu quá trình đăng nhập thành công sẽ trả về đường dẫn này</param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            //Thông tin chuyễn đến đến phương thức đăng nhập của bên thứ 3
+            ChallengeResult result = new ChallengeResult
+            {
+                LoginProvider = provider,
+                RedirectUri = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl })
+            };
+
+            return result;
+        }
+
+        /// <summary>
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Create Date: 2/10/2020</para>
+        /// </summary>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
+        {
+            // Kiểm tra nếu người dùng đã đăng nhập từ trước thì chuyễn người dùng đến trở về Trang chủ, tránh trường hợp đăng nhập sau khi đã đăng nhập.
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+
+            if (loginInfo == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            // Chủ động đăng nhập với bên thứ 3 tương ứng nếu người dùng đã đăng nhập từ trước
+            SignInStatus result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+
+            if (result == SignInStatus.Failure)
+            {
+                ApplicationUser user = UserManager.FindByEmail(loginInfo.Email);
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    user = new ApplicationUser { UserName = loginInfo.DefaultUserName, Email = loginInfo.Email };
+                    IdentityResult userResult = await UserManager.CreateAsync(user);
+                    if (userResult.Succeeded)
+                    {
+                        userResult = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
+                        if (userResult.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
+                    AddErrors(userResult);
+                }
+            }
+
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    // Nếu người dùng vẫn chưa có tài khoản, yêu cầu người dùng tạo một tài khoản
+                    ViewBag.ReturnUrl = returnUrl;
+                    ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                    ExternalLoginConfirmationViewModel model = new ExternalLoginConfirmationViewModel
+                    {
+                        Email = loginInfo.Email,
+                        UserName = loginInfo.DefaultUserName
+                    };
+                    return View("ExternalLoginConfirmation", model);
+            }
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ExternalLoginConfirmation()
+        {
+            return View();
+        }
+
+        // POST: /Account/ExternalLoginConfirmation
+        /// <summary>
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Create Date: 2/10/2020</para>
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Manage");
+            }
+
+            if (ModelState.IsValid)
+            {
+                // Lấy thông tin về người dùng từ thông tin đăng nhập cả bên thứ 3
+                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return View("ExternalLoginFailure");
+                }
+
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var result = await UserManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    if (result.Succeeded)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
+                AddErrors(result);
+            }
+
+            ViewBag.ReturnUrl = returnUrl;
+            return View(model);
+        }
+
         // POST: /Account/LogOff
         /// <summary>
-        /// - Đăng xuất tài khoản
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Create Date: 2/10/2020</para>
+        /// <para>Đăng xuất tài khoản</para>
         /// </summary>
         /// <returns>Clear Cookie và các trạng thái đăng nhập</returns>
         [HttpPost]
@@ -133,7 +284,10 @@ namespace Nihility.X0.Solution.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: /Account/Register
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Register()
@@ -145,7 +299,11 @@ namespace Nihility.X0.Solution.Controllers
             return View();
         }
 
-        // POST: /Account/Register
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -162,7 +320,7 @@ namespace Nihility.X0.Solution.Controllers
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Home");
