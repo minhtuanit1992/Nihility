@@ -117,6 +117,7 @@ label {
     display: inline-block;
     font-weight: 400;
     color: #6c757d;
+    width: 100%;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
@@ -238,6 +239,43 @@ label {
         font-size: 14px;
         font-weight: bold;
         font-family: 'Roboto',arial,sans-serif;
+    }
+}
+/*#endregion*/
+
+/*#region HR*/
+.hr-text {
+    line-height: 1em;
+    position: relative;
+    outline: 0;
+    border: 0;
+    color: black;
+    text-align: center;
+    height: 1.5em;
+    opacity: .5;
+
+    &:before {
+        content: '';
+        //Sử dụng linear-gradient cho hiệu ứng mở dần
+        //sử dụng một màu solid background cho một solid bar
+        background: linear-gradient(to right, transparent, #818078, transparent);
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+    }
+
+    &:after {
+        content: attr(data-content);
+        position: relative;
+        display: inline-block;
+        color: black;
+        padding: 0 .5em;
+        line-height: 1.5em;
+        // Đây là phần khó nhất, cần chỉ định màu background của phần tử container
+        color: #818078;
+        background-color: #fcfcfa;
     }
 }
 /*#endregion*/
@@ -432,6 +470,42 @@ label {
 }
 /*#endregion*/
 
+/*#region Confirm Email*/
+.confirm-page {
+
+    .card {
+        .card-body {
+
+            header {
+
+                .card-title {
+                    font-size: 1.125rem;
+                    margin-top: 0;
+                    font-weight: 700 !important;
+                    text-align: center;
+                }
+            }
+
+            .confirm-icon {
+                width: 140px;
+
+                svg {
+                    display: block;
+                    margin: 0 auto;
+                }
+            }
+
+            .card-subtitle {
+                color: $hyper-muted;
+                font-weight: 400;
+                font-size: 14.4px;
+                text-align: center;
+                margin-bottom: 2.25rem;
+            }
+        }
+    }
+}
+/*#endregion*/
 /* ===================================================================================
                                    Animation
    =================================================================================== */

@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Configuration;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -13,13 +18,67 @@ using Nihility.X0.Solution.Providers;
 
 namespace Nihility.X0.Solution
 {
+    public class EmailService : IIdentityMessageService
+    {
+        /// <summary>
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Để gửi được email, Gmail của người gửi chọn tắt chế độ kém an toàn của Google ở : https://myaccount.google.com/lesssecureapps</para>
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public async Task SendAsync(IdentityMessage message)
+        {
+            #region Viết Plugin gửi email ở đây
+            // Thông tin xác thực cho dịch vụ SMTP
+            string smtpServer = ConfigurationManager.AppSettings["EmailSmtpServer"];
+            int smtpPort = int.Parse(ConfigurationManager.AppSettings["EmailSmtpPort"]);
+            bool enableSsl = bool.Parse(ConfigurationManager.AppSettings["EmailEnableSSL"]);
+            string emailAccount = ConfigurationManager.AppSettings["EmailAccount"];
+            string emailPassword = ConfigurationManager.AppSettings["EmailPassword"];
+            string sentFrom = ConfigurationManager.AppSettings["EmailSentFrom"];
+
+            // Tạo thông tin xác thực
+            NetworkCredential credentials = new NetworkCredential
+            {
+                UserName = emailAccount,
+                Password = emailPassword
+            };
+
+            // Cấu hình và tạo nội dung gửi mail
+            MailAddress emailFrom = new MailAddress(sentFrom, "Minh Tuan");
+            MailAddress emailTo = new MailAddress(message.Destination);
+
+            MailMessage mail = new MailMessage(emailFrom, emailTo)
+            {
+                Subject = message.Subject,
+                Body = message.Body,
+                IsBodyHtml = true
+            };
+
+            // Cấu hình dịch vụ SMTP
+            SmtpClient smtpClient = new SmtpClient
+            {
+                Port = smtpPort,
+                Host = smtpServer,
+                EnableSsl = enableSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = credentials
+            };
+
+            // Gửi
+            await smtpClient.SendMailAsync(mail);
+            #endregion
+        }
+    }
 
     public class SmsService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Viết Plugin gửi SMS ở đây
+            #region Viết Plugin gửi SMS ở đây
             return Task.FromResult(0);
+            #endregion          
         }
     }
 
@@ -28,14 +87,14 @@ namespace Nihility.X0.Solution
     {
         public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store)
         {
-            // Khởi tạo dịch vụ gửi email(Không có thì gửi bằng niềm)
-            //EmailService = new EmailService();
-            SmsService = new SmsService();
+            // Khởi tạo dịch vụ gửi email
+            EmailService = new EmailService();
+            //SmsService = new SmsService();
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<NihiDbContext>()));
+            ApplicationUserManager manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<NihiDbContext>()));
             // Cấu hình xác thực cho tên người dùng
             manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
@@ -67,7 +126,7 @@ namespace Nihility.X0.Solution
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
             // Đăng ký gói dịch vụ xác thực qua Email
-            var email2FAProvider = new EmailTokenProvider<ApplicationUser>
+            EmailTokenProvider<ApplicationUser> email2FAProvider = new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is: {0}"
@@ -75,14 +134,14 @@ namespace Nihility.X0.Solution
             manager.RegisterTwoFactorProvider("EmailCode", email2FAProvider);
 
             // Đăng ký gói dịch vụ xác thực qua SMS
-            var sms2FAProvider = new PhoneNumberTokenProvider<ApplicationUser>
+            PhoneNumberTokenProvider<ApplicationUser> sms2FAProvider = new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is: {0}"
             };
             manager.RegisterTwoFactorProvider("PhoneCode", sms2FAProvider);
 
             // Đăng ký gói dịch vụ xác thực của Google Authendicator do Admin dựng.
-            var googleAuthendicator2FAProvider = new GoogleAuthenticatorTokenProvider();
+            GoogleAuthenticatorTokenProvider googleAuthendicator2FAProvider = new GoogleAuthenticatorTokenProvider();
             manager.RegisterTwoFactorProvider("GoogleAuthenticator", googleAuthendicator2FAProvider);
 
             var dataProtectionProvider = options.DataProtectionProvider;

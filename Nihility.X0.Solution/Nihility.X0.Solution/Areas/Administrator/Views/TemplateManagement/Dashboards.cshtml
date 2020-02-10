@@ -4,33 +4,7 @@
     Layout = "~/Areas/Administrator/Views/Shared/_LayoutAdministrator.cshtml";
 }
 
-<h2>Dashboards</h2>
-<table id="example" class="display" style="width:100%">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <td>Name</td>
-            <td>Alias</td>
-        </tr>
-    </thead>
-</table>
-
-@section scripts{
-    <script src="~/Scripts/DataTables/datatables.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable({
-                "ajax": {
-                    url: "https://localhost:44398/api/ProductCategory/GetAll?page=0&pageSize=1",
-                    dataSrc: 'Items'
-                },
-                "columns": [
-                    { data: "ID" },
-                    { data: "Name" },
-                    { data: "Alias" }
-                ],
-                paging: false,
-            });
-        });
-    </script>
-}
+<div class="content-page">
+    <div class="content">
+    </div> 
+</div>
