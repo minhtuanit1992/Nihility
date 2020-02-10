@@ -12,5 +12,10 @@ namespace Nihility.X0.Solution.Controllers
         {
             return View();
         }
+
+        public ActionResult AdminPage()
+        {
+            return View();
+        }
     }
 }

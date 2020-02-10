@@ -21,8 +21,7 @@ namespace Nihility.X0.Solution
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                        "~/Scripts/bootstrap.js",
-                        "~/Scripts/CKEditor/ckeditor.js"
+                        "~/Scripts/bootstrap.js"
                         ));
 
             // Sử dụng phiên bản phát triển của Modernizr để phát triển và học hỏi.
@@ -43,12 +42,14 @@ namespace Nihility.X0.Solution
 
             // Gói dữ liệu Style Sheet dành riêng cho Admin Page
             bundles.Add(new StyleBundle("~/Content/admin").Include(
-
+                         "~/Areas/Administrator/Content/Css/hyper.css",
+                         "~/Areas/Administrator/Content/Css/admin-style.css"
                         ));
 
             // Gói dữ liệu Javascript dành riêng cho Admin Page
             bundles.Add(new ScriptBundle("~/bundles/admin").Include(
-
+                         "~/Areas/Administrator/Scripts/Hyper/vendor.js",
+                         "~/Areas/Administrator/Scripts/Hyper/app.js"
                         ));
         }
     }

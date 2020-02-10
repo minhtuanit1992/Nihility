@@ -342,6 +342,10 @@
     <Content Include="Areas\Administrator\Asset\Admin\Scripts\pages\dashboard.js" />
     <Content Include="Areas\Administrator\Asset\Admin\Scripts\pages\dashboard2.js" />
     <Content Include="Areas\Administrator\Asset\Admin\Scripts\pages\dashboard3.js" />
+    <Content Include="Areas\Administrator\Content\Css\admin-style.css" />
+    <Content Include="Areas\Administrator\Content\Css\hyper.css" />
+    <Content Include="Areas\Administrator\Scripts\Hyper\app.js" />
+    <Content Include="Areas\Administrator\Scripts\Hyper\vendor.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -354,6 +358,7 @@
     <Content Include="Content\Css\Icon\Font-Feather.css" />
     <Content Include="Content\Css\Icon\Font-Material-Design.css" />
     <Content Include="Content\Css\Icon\Font-Microsoft.css" />
+    <Content Include="Content\Css\Icon\Font-Unicons.css" />
     <Content Include="Content\Css\MainStyle.css" />
     <Content Include="Content\Vendor\animate.min.css" />
     <Content Include="Content\Vendor\pretty-checkbox.css" />
@@ -383,7 +388,10 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Images\Avarta\my-avarta.jpg" />
     <Content Include="Images\Background\bg-pattern-light.svg" />
+    <Content Include="Images\Background\waves.png" />
+    <Content Include="Images\Cards\small-1.jpg" />
     <Content Include="Images\DataTables\sort_asc.png" />
     <Content Include="Images\DataTables\sort_asc_disabled.png" />
     <Content Include="Images\DataTables\sort_both.png" />
@@ -478,6 +486,8 @@
     <Content Include="Areas\Administrator\Asset\Admin\Scripts\adminlte.js.map" />
     <Content Include="Areas\Administrator\Asset\Admin\Scripts\adminlte.min.js.map" />
     <Content Include="Areas\Administrator\Views\TemplateManagement\Angular.cshtml" />
+    <Content Include="Areas\Administrator\Content\Sass\admin-style.scss" />
+    <Content Include="Areas\Administrator\Content\Css\admin-style.css.map" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -593,6 +603,8 @@
     <Content Include="Views\Example\Demo.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Example\AdminPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

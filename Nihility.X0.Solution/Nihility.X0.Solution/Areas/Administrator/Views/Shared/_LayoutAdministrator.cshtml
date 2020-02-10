@@ -3,20 +3,25 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.0.1/css/unicons.css">
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/admin")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body data-layout="detached">
     @Html.Partial("ManagementNavigation", null)
-    <main role="main">
-        @RenderBody()
+    <main class="container-fluid mm-active" role="main">
+        <div class="wrapper mm-show">
+            @Html.Partial("ManagementSidebar", null)
+            @RenderBody()
+        </div>
     </main>
     @Html.Partial("ManagementFooter", null)
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/admin")
     @RenderSection("scripts", required: false)
 </body>
 </html>
