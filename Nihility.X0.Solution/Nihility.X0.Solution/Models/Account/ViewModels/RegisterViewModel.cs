@@ -15,13 +15,8 @@ namespace Nihility.X0.Solution.Models.Account.ViewModels
 
         [Required]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Địa chỉ Email không hợp lệ")]
         public string Email { get; set; }
-
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
 
         [Display(Name = "User Role")]
         public string UserRoles { get; set; }

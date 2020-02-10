@@ -285,7 +285,7 @@ namespace Nihility.X0.Solution.Controllers
         }
 
         /// <summary>
-        /// 
+        /// <para>Trang đăng ký thành viên</para>
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -300,7 +300,8 @@ namespace Nihility.X0.Solution.Controllers
         }
 
         /// <summary>
-        /// 
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Nhận thông tin đăng ký từ người dùng</para>
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -311,27 +312,133 @@ namespace Nihility.X0.Solution.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                ApplicationUser user = new ApplicationUser
+                {
+                    UserName = model.UserName,
+                    Email = model.Email
+                };
+
+                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    // Tạo một Token xác nhận Email cho người dùng
+                    //<img width='60' src='https://i.ibb.co/hL4XZp2/android-chrome-192x192.png' title='logo' alt='logo'>
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Gửi một Email với đường dẫn này                                  
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string emailBody = string.Format(@"<body marginheight='0' topmargin='0' marginwidth='0' style='margin: 0px; background-color: #f2f3f8;' leftmargin='0'>
+    <table cellspacing='0' border='0' cellpadding='0' width='100%' bgcolor='#f2f3f8'>
+        <tr>
+            <td>
+                <table style='background-color: #f2f3f8; max-width:670px;  margin:0 auto;' width='100%' border='0'
+                       align='center' cellpadding='0' cellspacing='0'>
+                    <tr>
+                        <td style='height:80px;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>
+                            <a href='#' title='logo' target='_blank'>
+                              
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='height:20px;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table width='95%' border='0' align='center' cellpadding='0' cellspacing='0'
+                                   style='max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);'>
+                                <tr>
+                                    <td style='height:40px;'>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td style='padding:0 35px;'>
+                                        <h1 style='color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;'>
+                                            Xin chào, chúng tôi là MS-Apptech
+                                        </h1>
+                                        <span style='display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;'></span>
+                                        <p style='color:#455056; font-size:15px;line-height:24px; margin:0;'>
+                                            Chúng tôi rất vui vì đã nhận được yêu cầu gia nhập cộng đồng của chúng tôi từ bạn. Hãy nhấn vào button bên dưới để thực hiện bước xác nhận tài khoản.
+                                        </p>
+                                        <a href='{0}' style='background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;'>
+                                            Confirm Email
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='height:40px;'>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    <tr>
+                        <td style='height:20px;'>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td style='text-align:center;'>
+                            <p style='font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;'>&copy; <strong>www.MS-AppTech.com</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='height:80px;'>&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>", callbackUrl);
+
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", emailBody);
 
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
+            // Nếu thời gian quá lâu, quá trình có thể thật bại, quay lại form.
             return View(model);
         }
 
+        /// <summary>
+        /// <para>Author: Hứa Minh Tuấn</para>
+        /// <para>Xác nhận thông tin email được gửi bởi người dùng sau khi đăng ký</para>
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="code">Mã xác nhận email cho người dùng</param>
+        /// <returns></returns>
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return View("Error");
+            }
+
+            IdentityResult result;
+            try
+            {
+                result = await UserManager.ConfirmEmailAsync(userId, code);
+
+                if (result.Succeeded)
+                {
+                    return View();
+                }
+            }
+            catch (InvalidOperationException ioex)
+            {
+                // ConfirmEmailAsync quăng ra lỗi khi UserId không tìm thấy.
+                ViewBag.errorMessage = ioex.Message;
+                return View("Error");
+            }
+
+            AddErrors(result);
+            ViewBag.errorMessage = "ConfirmEmail failed";
+            return View("Error");
+        }
 
         protected override void Dispose(bool disposing)
         {
