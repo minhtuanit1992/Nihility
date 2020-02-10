@@ -214,6 +214,7 @@
     <Compile Include="Areas\Administrator\AdministratorAreaRegistration.cs" />
     <Compile Include="Areas\Administrator\Controllers\api\PostCategoryController.cs" />
     <Compile Include="Areas\Administrator\Controllers\api\ProductCategoryController.cs" />
+    <Compile Include="Areas\Administrator\Controllers\BaseUIController.cs" />
     <Compile Include="Areas\Administrator\Controllers\RoleManagementController.cs" />
     <Compile Include="Areas\Administrator\Controllers\TemplateManagementController.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
@@ -488,6 +489,7 @@
     <Content Include="Areas\Administrator\Views\TemplateManagement\Angular.cshtml" />
     <Content Include="Areas\Administrator\Content\Sass\admin-style.scss" />
     <Content Include="Areas\Administrator\Content\Css\admin-style.css.map" />
+    <Content Include="Areas\Administrator\Views\BaseUI\Card.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
