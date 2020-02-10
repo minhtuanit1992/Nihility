@@ -67,14 +67,18 @@ namespace Nihility.X0.Solution
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
 
             // Đăng ký gói dịch vụ xác thực qua Email
-            var email2FAProvider = new EmailTokenProvider<ApplicationUser>();
-            email2FAProvider.Subject = "Security Code";
-            email2FAProvider.BodyFormat = "Your security code is: {0}";
+            var email2FAProvider = new EmailTokenProvider<ApplicationUser>
+            {
+                Subject = "Security Code",
+                BodyFormat = "Your security code is: {0}"
+            };
             manager.RegisterTwoFactorProvider("EmailCode", email2FAProvider);
 
             // Đăng ký gói dịch vụ xác thực qua SMS
-            var sms2FAProvider = new PhoneNumberTokenProvider<ApplicationUser>();
-            sms2FAProvider.MessageFormat = "Your security code is: {0}";
+            var sms2FAProvider = new PhoneNumberTokenProvider<ApplicationUser>
+            {
+                MessageFormat = "Your security code is: {0}"
+            };
             manager.RegisterTwoFactorProvider("PhoneCode", sms2FAProvider);
 
             // Đăng ký gói dịch vụ xác thực của Google Authendicator do Admin dựng.
